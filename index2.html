@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIAEE Oriente - Sistema Integrado de AEE (CEJO & SENAI)</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts: Inter e OpenDyslexic/Atkinson para acessibilidade -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #0284c7;
+            --primary-hover: #0369a1;
+            --secondary-color: #0d9488;
+            --accent-color: #f59e0b;
+            --bg-light: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+            --base-font-size: 16px;
+        }
+
+        html {
+            font-size: var(--base-font-size);
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            padding-bottom: 60px;
+        }
+
+        /* Estilo para Fonte Legível Dislexia */
+        body.dyslexic-font {
+            font-family: 'Atkinson Hyperlegible', sans-serif !important;
+            letter-spacing: 0.05em;
+            word-spacing: 0.1em;
+        }
+
+        /* Modo Alto Contraste */
+        body.high-contrast {
+            --bg-light: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #f8fafc;
+            --border-color: #333333;
+            background-color: #121212 !important;
+            color: #ffffff !important;
+        }
+
+        body.high-contrast .card, 
+        body.high-contrast .modal-content,
+        body.high-contrast .list-group-item,
+        body.high-contrast .navbar,
+        body.high-contrast .accessibility-bar {
+            background-color: #1e1e1e !important;
+            color: #ffffff !important;
+            border-color: #444444 !important;
+        }
+
+        body.high-contrast .btn-primary {
+            background-color: #ffff00 !important;
+            color: #000000 !important;
+            border-color: #ffff00 !important;
+            font-weight: bold;
+        }
+
+        body.high-contrast .btn-outline-primary {
+            color: #ffff00 !important;
+            border-color: #ffff00 !important;
+        }
+
+        /* Barra de Acessibilidade Superior */
+        .accessibility-bar {
+            background-color: #0f172a;
+            color: #ffffff;
+            padding: 8px 0;
+            font-size: 0.9rem;
+            border-bottom: 2px solid #0284c7;
+        }
+
+        .accessibility-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 3px 10px;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .accessibility-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+        }
+
+        /* Header e Branding CEJO + SENAI */
+        .brand-header {
+            background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+            color: white;
+            padding: 2.5rem 0 2rem 0;
+            border-radius: 0 0 24px 24px;
+            box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.25);
+        }
+
+        .badge-cejo {
+            background-color: #f59e0b;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .badge-senai {
+            background-color: #e11d48;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        /* Cards do Dashboard */
+        .stat-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        /* Tabela e Elementos Interativos */
+        .custom-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .badge-diag {
+            font-size: 0.8rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        /* Widget Flutuante do Mascote Ori */
+        .mascot-widget {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1050;
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+        }
+
+        .mascot-avatar {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .mascot-avatar:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .mascot-avatar i {
+            color: #ffffff;
+            font-size: 1.8rem;
+        }
+
+        .mascot-bubble {
+            background: var(--card-bg);
+            border: 2px solid #10b981;
+            color: var(--text-color);
+            padding: 16px 20px;
+            border-radius: 20px;
+            border-bottom-right-radius: 4px;
+            max-width: 320px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cartões dos Alunos Devs */
+        .team-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .team-card:hover {
+            transform: translateY(-3px);
+            border-color: #0284c7;
+        }
+
+        .team-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e0f2fe;
+            color: #0284c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px auto;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Container de Notificação Toast */
+        .toast-container {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            z-index: 1090;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="accessibility-bar sticky-top">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <i class="fa-solid fa-universal-access text-info me-1"></i>
+                <span class="fw-semibold">Recursos de Acessibilidade:</span>
+            </div>
+            <div class="d-flex flex-wrap align-items-center gap-2">
+                <button class="accessibility-btn" id="btn-font-decrease" title="Diminuir tamanho do texto">
+                    <i class="fa-solid fa-minus me-1"></i> A-
+                </button>
+                <button class="accessibility-btn" id="btn-font-reset" title="Restaurar tamanho padrão">
+                    <i class="fa-solid fa-rotate-left me-1"></i> Padrão
+                </button>
+                <button class="accessibility-btn" id="btn-font-increase" title="Aumentar tamanho do texto">
+                    <i class="fa-solid fa-plus me-1"></i> A+
+                </button>
+                <button class="accessibility-btn" id="btn-toggle-contrast" title="Alternar Modo Alto Contraste">
+                    <i class="fa-solid fa-circle-half-stroke me-1"></i> Alto Contraste
+                </button>
+                <button class="accessibility-btn" id="btn-toggle-dyslexia" title="Fonte para Dislexia">
+                    <i class="fa-solid fa-font me-1"></i> Fonte Dislexia
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <header class="brand-header mb-4">
+        <div class="container">
+            <div class="row align-items-center gy-3">
+                <div class="col-md-8">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="badge badge-cejo px-3 py-1 rounded-pill">CEJO</span>
+                        <span class="badge badge-senai px-3 py-1 rounded-pill">SENAI</span>
+                        <span class="text-white-50 text-sm"><i class="fa-solid fa-code me-1"></i>1º Ano Médio Tec</span>
+                    </div>
+                    <h1 class="fw-bold display-6 mb-1">
+                        SIAEE Oriente <small class="fs-5 fw-normal text-white-50">| Sistema Integrado de AEE</small>
+                    </h1>
+                    <p class="lead mb-0 text-white-80 fs-6">
+                        Colégio Estadual Jardim Oriente - Atendimento Educacional Especializado & Gestão de PDI
+                    </p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <button class="btn btn-light text-primary fw-bold shadow-sm rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#modalNovoAluno">
+                        <i class="fa-solid fa-user-plus me-2"></i> Cadastrar Aluno AEE
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- Dashboard Stats -->
+        <section class="row g-3 mb-4" aria-label="Indicadores do AEE">
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="stat-card p-3 d-flex align-items-center gap-3">
+                    <div class="stat-icon bg-primary-subtle text-primary">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div>
+                        <span class="text-muted fs-7 d-block">Alunos Cadastrados</span>
+                        <h3 class="fw-bold mb-0" id="stat-total-alunos">0</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="stat-card p-3 d-flex align-items-center gap-3">
+                    <div class="stat-icon bg-success-subtle text-success">
+                        <i class="fa-solid fa-file-signature"></i>
+                    </div>
+                    <div>
+                        <span class="text-muted fs-7 d-block">PDIs Ativos</span>
+                        <h3 class="fw-bold mb-0" id="stat-pdis-ativos">0</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="stat-card p-3 d-flex align-items-center gap-3">
+                    <div class="stat-icon bg-warning-subtle text-warning-emphasis">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                    <div>
+                        <span class="text-muted fs-7 d-block">Atendimentos no Mês</span>
+                        <h3 class="fw-bold mb-0" id="stat-atendimentos">0</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="stat-card p-3 d-flex align-items-center gap-3">
+                    <div class="stat-icon bg-info-subtle text-info-emphasis">
+                        <i class="fa-solid fa-heart-circle-check"></i>
+                    </div>
+                    <div>
+                        <span class="text-muted fs-7 d-block">Acompanhamentos</span>
+                        <h3 class="fw-bold mb-0">100% CEJO</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="custom-card p-4 mb-5">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                <div>
+                    <h2 class="h4 fw-bold mb-1">
+                        <i class="fa-solid fa-address-book text-primary me-2"></i>Alunos Acompanhados pelo AEE
+                    </h2>
+                    <p class="text-muted small mb-0">
+                        Consulte e gerencie os Planos de Desenvolvimento Individual (PDI) e diários de atendimento.
+                    </p>
+                </div>
+                <div class="d-flex flex-wrap gap-2 w-100 w-md-auto">
+                    <div class="input-group" style="max-width: 280px;">
+                        <span class="input-group-text bg-body-tertiary border-end-0">
+                            <i class="fa-solid fa-magnifying-glass text-muted"></i>
+                        </span>
+                        <input type="text" id="input-search" class="form-control border-start-0" placeholder="Buscar aluno ou diagnóstico...">
+                    </div>
+                    <select id="select-filter-turma" class="form-select" style="max-width: 180px;">
+                        <option value="">Todas as Turmas</option>
+                        <option value="1º Ano A">1º Ano A - CEJO</option>
+                        <option value="1º Ano B">1º Ano B - CEJO</option>
+                        <option value="2º Ano A">2º Ano A - CEJO</option>
+                        <option value="3º Ano A">3º Ano A - CEJO</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tabela Responsiva de Alunos -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Aluno</th>
+                            <th scope="col">Turma</th>
+                            <th scope="col">Diagnóstico / Necessidade</th>
+                            <th scope="col">Contato Responsável</th>
+                            <th scope="col" class="text-end">Ações & PDI</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-alunos-body">
+                        <!-- Conteúdo gerado dinamicamente via JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="no-results" class="text-center py-4 d-none">
+                <i class="fa-solid fa-folder-open text-muted fs-1 mb-2"></i>
+                <p class="text-muted mb-0">Nenhum aluno encontrado para os critérios de busca selecionados.</p>
+            </div>
+        </section>
+
+        <section class="custom-card p-4 mb-5 bg-gradient">
+            <div class="text-center mb-4">
+                <span class="badge bg-primary-subtle text-primary fw-bold px-3 py-2 rounded-pill mb-2">
+                    <i class="fa-solid fa-laptop-code me-1"></i> SENAI & CEJO - Desenvolvimento de Sistemas
+                </span>
+                <h2 class="h3 fw-bold mb-1">Equipe de Desenvolvimento do Projeto</h2>
+                <p class="text-muted">
+                    Desenvolvido com orgulho pelos alunos do 1º Ano Médio Tec para fortalecer a inclusão no Colégio Estadual Jardim Oriente.
+                </p>
+            </div>
+
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-7 g-3">
+                <!-- Herbert (Líder) -->
+                <div class="col">
+                    <div class="team-card h-100">
+                        <div class="team-avatar bg-primary text-white">H</div>
+                        <h6 class="fw-bold mb-1 fs-6">Herbert</h6>
+                        <span class="badge bg-primary-subtle text-primary rounded-pill mb-1">Líder / Dev</span>
+                        <small class="d-block text-muted">1º Ano Tec</small>
+                    </div>
+                </div>
+                <!-- Joelson -->
+                <div class="col">
+                    <div class="team-card h-100">
+                        <div class="team-avatar">J</div>
+                        <h6 class="fw-bold mb-1 fs-6">Joelson</h6>
+                        <span class="badge bg-secondary-subtle text-secondary rounded-pill mb-1">Dev Team</span>
+                        <small class="d-block text-muted">1º Ano Tec</small>
+                    </div>
+                </div>
+                <!-- Mateus Henrique -->
+                <div class="col">
+                    <div class="team-card h-100">
+                        <div class="team-avatar">MH</div>
+                        <h6 class="fw-bold mb-1 fs-6">Mateus H.</h6>
+                        <span class="badge bg-secondary-subtle text-secondary rounded-pill mb-1">Dev Team</span>
+                        <small class="d-block text-muted">1º Ano Tec</small>
+                    </div>
+                </div>
+                <!-- Mateus Dantas -->
+                <div class="col">
+                    <div class="team-card h-100">
+                        <div class="team-avatar">MD</div>
+                        <h6 class="fw-bold mb-1 fs-6">Mateus D.</h6>
+                        <span class="badge bg-secondary-subtle text-secondary rounded-pill mb-1">Dev Team</span>
+                        <small class="d-block text-muted">1º Ano Tec</small>
+                    </div>
+                </div>
+                <!-- Henrique -->
+                <div class="col">
+                    <div class="team-card h-100">
+                        <div class="team-avatar">H</div>
+                        <h6 class="fw-bold mb-1 fs-6">Henrique</h6>
+                        <span class="badge bg-secondary-subtle text-secondary rounded-pill mb-1">Dev Team</span>
+                        <small class="d-block text-muted">1º Ano Tec</small>
+                    </div>
+                </div>
+                <!-- Eduardo -->
+                <div class="col">
+                    <div class="team-card h-100">
+                        <div class="team-avatar">E</div>
+                        <h6 class="fw-bold mb-1 fs-6">Eduardo</h6>
+                        <span class="badge bg-secondary-subtle text-secondary rounded-pill mb-1">Dev Team</span>
+                        <small class="d-block text-muted">1º Ano Tec</small>
+                    </div>
+                </div>
+                <!-- Jhonathan -->
+                <div class="col">
+                    <div class="team-card h-100">
+                        <div class="team-avatar">J</div>
+                        <h6 class="fw-bold mb-1 fs-6">Jhonathan</h6>
+                        <span class="badge bg-secondary-subtle text-secondary rounded-pill mb-1">Dev Team</span>
+                        <small class="d-block text-muted">1º Ano Tec</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    
+    <!-- MODAL: Cadastro de Novo Aluno -->
+    <div class="modal fade" id="modalNovoAluno" tabindex="-1" aria-labelledby="modalNovoAlunoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold" id="modalNovoAlunoLabel">
+                        <i class="fa-solid fa-user-plus me-2"></i>Cadastrar Novo Aluno no AEE
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <form id="form-cadastrar-aluno">
+                    <div class="modal-body p-4">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label for="nomeAluno" class="form-label fw-semibold">Nome Completo do Aluno *</label>
+                                <input type="text" class="form-control" id="nomeAluno" required placeholder="Ex: Lucas Gabriel Oliveira">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="turmaAluno" class="form-label fw-semibold">Série / Turma (CEJO) *</label>
+                                <select class="form-select" id="turmaAluno" required>
+                                    <option value="" selected disabled>Selecione...</option>
+                                    <option value="1º Ano A">1º Ano A - CEJO</option>
+                                    <option value="1º Ano B">1º Ano B - CEJO</option>
+                                    <option value="2º Ano A">2º Ano A - CEJO</option>
+                                    <option value="3º Ano A">3º Ano A - CEJO</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="diagnosticoAluno" class="form-label fw-semibold">Diagnóstico / Necessidade Especial *</label>
+                                <select class="form-select" id="diagnosticoAluno" required>
+                                    <option value="" selected disabled>Selecione...</option>
+                                    <option value="TEA (Autismo)">TEA (Transtorno do Espectro Autista)</option>
+                                    <option value="TDAH">TDAH (Déficit de Atenção / Hiperatividade)</option>
+                                    <option value="Baixa Visão / Cegueira">Baixa Visão / Cegueira</option>
+                                    <option value="Deficiência Auditiva / Surdez">Deficiência Auditiva / Surdez</option>
+                                    <option value="Deficiência Intelectual">Deficiência Intelectual</option>
+                                    <option value="Altas Habilidades / Superdotação">Altas Habilidades / Superdotação</option>
+                                    <option value="Outro">Outro Diagnóstico</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="contatoResponsavel" class="form-label fw-semibold">Contato do Responsável *</label>
+                                <input type="text" class="form-control" id="contatoResponsavel" required placeholder="Ex: (62) 99999-8888 (Mãe: Maria)">
+                            </div>
+
+                            <div class="col-12">
+                                <label for="objetivosPDI" class="form-label fw-semibold">Objetivos Principais do PDI</label>
+                                <textarea class="form-control" id="objetivosPDI" rows="2" placeholder="Ex: Desenvolver a concentração, promover a autonomia na escrita, acompanhamento com material adaptado."></textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="adaptacoesRec" class="form-label fw-semibold">Adaptações Curriculares e Recursos Necessários</label>
+                                <textarea class="form-control" id="adaptacoesRec" rows="2" placeholder="Ex: Tempo adicional para provas, uso de fonte ampliada, apoio visual e prancha de comunicação."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary rounded-pill fw-bold">
+                            <i class="fa-solid fa-floppy-disk me-1"></i> Salvar Cadastro
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Prontuário PDI e Diário de Bordo -->
+    <div class="modal fade" id="modalPDI" tabindex="-1" aria-labelledby="modalPDILabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title fw-bold" id="modalPDILabel">
+                        <i class="fa-solid fa-folder-open text-warning me-2"></i>PDI & Diário de Atendimento
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <!-- Detalhes do Aluno em Destaque -->
+                    <div class="card bg-body-tertiary border-0 p-3 mb-4 rounded-3">
+                        <div class="row align-items-center g-2">
+                            <div class="col-md-8">
+                                <h4 class="fw-bold text-primary mb-1" id="pdi-nome-aluno">Nome do Aluno</h4>
+                                <div class="d-flex flex-wrap gap-2 align-items-center">
+                                    <span class="badge bg-secondary" id="pdi-turma">Turma</span>
+                                    <span class="badge bg-info text-dark" id="pdi-diagnostico">Diagnóstico</span>
+                                    <span class="text-muted small"><i class="fa-solid fa-phone me-1"></i><span id="pdi-contato">Contato</span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-3">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <h6 class="fw-bold text-dark"><i class="fa-solid fa-bullseye me-1 text-primary"></i>Objetivos do PDI:</h6>
+                                <p class="small text-muted mb-0" id="pdi-objetivos">---</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="fw-bold text-dark"><i class="fa-solid fa-puzzle-piece me-1 text-success"></i>Adaptações e Recursos:</h6>
+                                <p class="small text-muted mb-0" id="pdi-adaptacoes">---</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Novo Registro no Diário de Bordo -->
+                    <div class="card border-primary p-3 mb-4">
+                        <h6 class="fw-bold text-primary mb-3">
+                            <i class="fa-solid fa-plus-circle me-1"></i> Registrar Atendimento / Sessão AEE
+                        </h6>
+                        <form id="form-novo-atendimento">
+                            <input type="hidden" id="pdi-aluno-id">
+                            <div class="row g-2">
+                                <div class="col-md-3">
+                                    <label for="dataAtendimento" class="form-label small fw-semibold">Data da Sessão</label>
+                                    <input type="date" class="form-control form-control-sm" id="dataAtendimento" required>
+                                </div>
+                                <div class="col-md-9">
+                                    <label for="recursoAtendimento" class="form-label small fw-semibold">Recursos / Atividades Utilizadas</label>
+                                    <input type="text" class="form-control form-control-sm" id="recursoAtendimento" placeholder="Ex: Jogos pedagógicos adaptados, computador acessível..." required>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <label for="evolucaoAtendimento" class="form-label small fw-semibold">Evolução e Observações Pedagógicas</label>
+                                    <textarea class="form-control form-control-sm" id="evolucaoAtendimento" rows="2" placeholder="Descreva o desempenho, participação e avanços do aluno durante a sessão..." required></textarea>
+                                </div>
+                                <div class="col-12 text-end mt-2">
+                                    <button type="submit" class="btn btn-primary btn-sm rounded-pill px-3">
+                                        <i class="fa-solid fa-save me-1"></i> Salvar Atendimento
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Histórico de Atendimentos -->
+                    <h6 class="fw-bold mb-3"><i class="fa-solid fa-history me-1"></i> Histórico de Sessões Registradas</h6>
+                    <div class="list-group" id="lista-atendimentos-pdi">
+                        <!-- Itens gerados via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mascot-widget">
+        <div class="mascot-bubble" id="mascot-bubble">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="fw-bold text-success small">
+                    <i class="fa-solid fa-lightbulb me-1"></i> Ori (O Camaleão do AEE)
+                </span>
+                <button type="button" class="btn-close btn-sm" id="btn-close-mascot" aria-label="Fechar dica"></button>
+            </div>
+            <p class="small mb-2" id="mascot-text">
+                Olá! Sou o Ori, o mascote da inclusão do CEJO. O AEE adapta o ensino ao ritmo de cada estudante!
+            </p>
+            <button class="btn btn-outline-success btn-sm w-100 py-0 rounded-pill" id="btn-next-tip">
+                <i class="fa-solid fa-shuffle me-1"></i> Outra dica
+            </button>
+        </div>
+        <div class="mascot-avatar" id="mascot-avatar" title="Clique para ver uma dica do Ori!">
+            <i class="fa-solid fa-frog"></i>
+        </div>
+    </div>
+
+    <!-- Container para Avisos Flutuantes (Toast) -->
+    <div class="toast-container">
+        <div id="liveToast" class="toast align-items-center text-bg-success border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body fw-semibold" id="toast-message">
+                    Operação realizada com sucesso!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const STORAGE_KEY = 'SIAEE_CEJO_ALUNOS_DATA_V1';
+
+        // Dados Iniciais de Demonstração (caso o localStorage esteja vazio)
+        const initialStudents = [
+            {
+                id: '1',
+                nome: 'Gabriel Santos Ferreira',
+                turma: '1º Ano A',
+                diagnostico: 'TEA (Autismo)',
+                contato: '(62) 99876-1234 (Mãe: Ana)',
+                objetivos: 'Fomentar a interação social nas tarefas em grupo e focar na interpretação textual.',
+                adaptacoes: 'Uso de cronograma visual de atividades, avaliações fracionadas e redução de ruídos.',
+                atendimentos: [
+                    {
+                        data: '2026-03-10',
+                        recurso: 'Jogos digitais de associação de ideias e imagens.',
+                        evolucao: 'Gabriel demonstrou ótimo interesse nos jogos virtuais no laboratório. Manteve o foco por 35 minutos contínuos.'
+                    },
+                    {
+                        data: '2026-03-17',
+                        recurso: 'Prancha de comunicação e leitura compartilhada.',
+                        evolucao: 'Conseguiu expressar com clareza suas preferências na atividade de leitura.'
+                    }
+                ]
+            },
+            {
+                id: '2',
+                nome: 'Mariana Lima Rocha',
+                turma: '1º Ano B',
+                diagnostico: 'Baixa Visão / Cegueira',
+                contato: '(62) 98111-2233 (Pai: Roberto)',
+                objetivos: 'Garantir acessibilidade aos materiais didáticos de Matemática e Português.',
+                adaptacoes: 'Textos com fonte ampliada (tamanho 24), alto contraste impresso e uso do leitor de tela NVDA.',
+                atendimentos: [
+                    {
+                        data: '2026-03-12',
+                        recurso: 'Atividade de matemática impressa em fonte ampliada 24pt.',
+                        evolucao: 'Mariana realizou todos os exercícios propostos sem fadiga visual acentuada.'
+                    }
+                ]
+            },
+            {
+                id: '3',
+                nome: 'Lucas Eduardo Mendes',
+                turma: '2º Ano A',
+                diagnostico: 'TDAH',
+                contato: '(62) 99333-4455 (Mãe: Carla)',
+                objetivos: 'Desenvolver estratégias de organização do tempo de estudo e autorregulação.',
+                adaptacoes: 'Pausas programadas a cada 25 minutos e enunciados curtos e diretos.',
+                atendimentos: [
+                    {
+                        data: '2026-03-15',
+                        recurso: 'Técnica Pomodoro adaptada com apoio visual.',
+                        evolucao: 'Apresentou progresso significativo na organização do caderno de exatas.'
+                    }
+                ]
+            }
+        ];
+
+        // Estado do Sistema
+        let alunosData = [];
+        let currentFontSize = 16;
+
+        // Dicas do Mascote Ori
+        const mascotTips = [
+            "O PDI (Plano de Desenvolvimento Individual) deve ser atualizado periodicamente com as conquistas do aluno!",
+            "Adaptações curriculares não reduzem o nível do ensino, apenas garantem igualdade de acesso ao conhecimento.",
+            "Tecnologias Assistivas como leitores de tela e botões de alto contraste transformam a experiência do estudante no CEJO.",
+            "Inclusão é um compromisso de todos: professores regulares, equipe AEE, SENAI e colegas de turma!"
+        ];
+
+        
+        function loadData() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                try {
+                    alunosData = JSON.parse(stored);
+                } catch (e) {
+                    alunosData = initialStudents;
+                }
+            } else {
+                alunosData = initialStudents;
+                saveData();
+            }
+            renderTable();
+            updateStats();
+        }
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(alunosData));
+            updateStats();
+        }
+
+        function updateStats() {
+            document.getElementById('stat-total-alunos').innerText = alunosData.length;
+            document.getElementById('stat-pdis-ativos').innerText = alunosData.filter(a => a.objetivos).length;
+            
+            let totalAtendimentos = 0;
+            alunosData.forEach(aluno => {
+                if (aluno.atendimentos) {
+                    totalAtendimentos += aluno.atendimentos.length;
+                }
+            });
+            document.getElementById('stat-atendimentos').innerText = totalAtendimentos;
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('table-alunos-body');
+            const searchVal = document.getElementById('input-search').value.toLowerCase();
+            const filterTurma = document.getElementById('select-filter-turma').value;
+            const noResults = document.getElementById('no-results');
+
+            tbody.innerHTML = '';
+
+            const filtered = alunosData.filter(aluno => {
+                const matchesSearch = aluno.nome.toLowerCase().includes(searchVal) || 
+                                      aluno.diagnostico.toLowerCase().includes(searchVal);
+                const matchesTurma = filterTurma === '' || aluno.turma === filterTurma;
+                return matchesSearch && matchesTurma;
+            });
+
+            if (filtered.length === 0) {
+                noResults.classList.remove('d-none');
+            } else {
+                noResults.classList.add('d-none');
+            }
+
+            filtered.forEach(aluno => {
+                const tr = document.createElement('tr');
+                
+                // Badge de cor de acordo com o diagnóstico
+                let badgeClass = 'bg-primary-subtle text-primary';
+                if(aluno.diagnostico.includes('TEA')) badgeClass = 'bg-info-subtle text-info-emphasis';
+                if(aluno.diagnostico.includes('TDAH')) badgeClass = 'bg-warning-subtle text-warning-emphasis';
+                if(aluno.diagnostico.includes('Visão')) badgeClass = 'bg-danger-subtle text-danger-emphasis';
+
+                tr.innerHTML = `
+                    <td>
+                        <div class="fw-bold">${escapeHtml(aluno.nome)}</div>
+                        <small class="text-muted">ID: #${aluno.id}</small>
+                    </td>
+                    <td>
+                        <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">
+                            ${escapeHtml(aluno.turma)}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge ${badgeClass} badge-diag">
+                            ${escapeHtml(aluno.diagnostico)}
+                        </span>
+                    </td>
+                    <td><small class="text-muted"><i class="fa-solid fa-phone me-1"></i>${escapeHtml(aluno.contato)}</small></td>
+                    <td class="text-end">
+                        <button class="btn btn-primary btn-sm rounded-pill me-1" onclick="openPDIModal('${aluno.id}')">
+                            <i class="fa-solid fa-folder-open me-1"></i> PDI & Diário
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm rounded-circle" onclick="deleteAluno('${aluno.id}')" title="Excluir Aluno">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function openPDIModal(id) {
+            const aluno = alunosData.find(a => a.id === id);
+            if (!aluno) return;
+
+            document.getElementById('pdi-aluno-id').value = aluno.id;
+            document.getElementById('pdi-nome-aluno').innerText = aluno.nome;
+            document.getElementById('pdi-turma').innerText = aluno.turma;
+            document.getElementById('pdi-diagnostico').innerText = aluno.diagnostico;
+            document.getElementById('pdi-contato').innerText = aluno.contato;
+            document.getElementById('pdi-objetivos').innerText = aluno.objetivos || 'Nenhum objetivo cadastrado.';
+            document.getElementById('pdi-adaptacoes').innerText = aluno.adaptacoes || 'Nenhuma adaptação especificada.';
+
+            renderAtendimentosList(aluno);
+
+            // Define a data de hoje como padrão no formulário
+            document.getElementById('dataAtendimento').value = new Date().toISOString().split('T')[0];
+
+            const modal = new bootstrap.Modal(document.getElementById('modalPDI'));
+            modal.show();
+        }
+
+        function renderAtendimentosList(aluno) {
+            const container = document.getElementById('lista-atendimentos-pdi');
+            container.innerHTML = '';
+
+            if (!aluno.atendimentos || aluno.atendimentos.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-3 text-muted small">
+                        <i class="fa-solid fa-calendar-xmark mb-1 d-block fs-5"></i>
+                        Nenhum atendimento registrado no diário de bordo ainda.
+                    </div>
+                `;
+                return;
+            }
+
+            // Ordena os atendimentos pela data mais recente
+            const sorted = [...aluno.atendimentos].reverse();
+
+            sorted.forEach(at => {
+                const item = document.createElement('div');
+                item.className = 'list-group-item list-group-item-action flex-column align-items-start p-3';
+                item.innerHTML = `
+                    <div class="d-flex w-100 justify-content-between mb-1">
+                        <h6 class="mb-1 fw-bold text-primary">
+                            <i class="fa-solid fa-calendar-day me-1"></i> ${formatDate(at.data)}
+                        </h6>
+                        <small class="text-muted"><i class="fa-solid fa-screwdriver-wrench me-1"></i>${escapeHtml(at.recurso)}</small>
+                    </div>
+                    <p class="mb-1 small text-secondary">${escapeHtml(at.evolucao)}</p>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        document.getElementById('form-cadastrar-aluno').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const novoAluno = {
+                id: Date.now().toString(),
+                nome: document.getElementById('nomeAluno').value.trim(),
+                turma: document.getElementById('turmaAluno').value,
+                diagnostico: document.getElementById('diagnosticoAluno').value,
+                contato: document.getElementById('contatoResponsavel').value.trim(),
+                objetivos: document.getElementById('objetivosPDI').value.trim(),
+                adaptacoes: document.getElementById('adaptacoesRec').value.trim(),
+                atendimentos: []
+            };
+
+            alunosData.push(novoAluno);
+            saveData();
+            renderTable();
+
+            // Limpa e fecha modal
+            this.reset();
+            const modalEl = document.getElementById('modalNovoAluno');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+
+            showToast('Aluno cadastrado com sucesso!');
+        });
+
+        document.getElementById('form-novo-atendimento').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = document.getElementById('pdi-aluno-id').value;
+            const aluno = alunosData.find(a => a.id === id);
+
+            if (aluno) {
+                if (!aluno.atendimentos) aluno.atendimentos = [];
+
+                const novoAtendimento = {
+                    data: document.getElementById('dataAtendimento').value,
+                    recurso: document.getElementById('recursoAtendimento').value.trim(),
+                    evolucao: document.getElementById('evolucaoAtendimento').value.trim()
+                };
+
+                aluno.atendimentos.push(novoAtendimento);
+                saveData();
+                renderAtendimentosList(aluno);
+
+                document.getElementById('recursoAtendimento').value = '';
+                document.getElementById('evolucaoAtendimento').value = '';
+
+                showToast('Atendimento registrado no PDI!');
+            }
+        });
+
+        function deleteAluno(id) {
+            if (window.confirm("Deseja realmente remover este cadastro de aluno do AEE?")) {
+                alunosData = alunosData.filter(a => a.id !== id);
+                saveData();
+                renderTable();
+                showToast('Cadastro de aluno removido.');
+            }
+        }
+
+        document.getElementById('btn-font-increase').addEventListener('click', () => {
+            if (currentFontSize < 22) {
+                currentFontSize += 2;
+                document.documentElement.style.setProperty('--base-font-size', currentFontSize + 'px');
+            }
+        });
+
+        document.getElementById('btn-font-decrease').addEventListener('click', () => {
+            if (currentFontSize > 12) {
+                currentFontSize -= 2;
+                document.documentElement.style.setProperty('--base-font-size', currentFontSize + 'px');
+            }
+        });
+
+        document.getElementById('btn-font-reset').addEventListener('click', () => {
+            currentFontSize = 16;
+            document.documentElement.style.setProperty('--base-font-size', '16px');
+        });
+
+        document.getElementById('btn-toggle-contrast').addEventListener('click', () => {
+            document.body.classList.toggle('high-contrast');
+        });
+
+        document.getElementById('btn-toggle-dyslexia').addEventListener('click', () => {
+            document.body.classList.toggle('dyslexic-font');
+            showToast('Fonte legível para dislexia ' + (document.body.classList.contains('dyslexic-font') ? 'ativada' : 'desativada'));
+        });
+
+        const mascotAvatar = document.getElementById('mascot-avatar');
+        const mascotBubble = document.getElementById('mascot-bubble');
+        const mascotText = document.getElementById('mascot-text');
+        const btnNextTip = document.getElementById('btn-next-tip');
+        const btnCloseMascot = document.getElementById('btn-close-mascot');
+
+        let currentTipIdx = 0;
+
+        mascotAvatar.addEventListener('click', () => {
+            const isVisible = mascotBubble.style.display === 'block';
+            mascotBubble.style.display = isVisible ? 'none' : 'block';
+        });
+
+        btnCloseMascot.addEventListener('click', () => {
+            mascotBubble.style.display = 'none';
+        });
+
+        btnNextTip.addEventListener('click', () => {
+            currentTipIdx = (currentTipIdx + 1) % mascotTips.length;
+            mascotText.innerText = mascotTips[currentTipIdx];
+        });
+
+        // Eventos de Busca e Filtro na Tabela
+        document.getElementById('input-search').addEventListener('input', renderTable);
+        document.getElementById('select-filter-turma').addEventListener('change', renderTable);
+
+        // Helper Funções
+        function showToast(message) {
+            document.getElementById('toast-message').innerText = message;
+            const toastEl = document.getElementById('liveToast');
+            const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+            toast.show();
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const parts = dateStr.split('-');
+            if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            return dateStr;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, "&amp;")
+                      .replace(/</g, "&lt;")
+                      .replace(/>/g, "&gt;")
+                      .replace(/"/g, "&quot;")
+                      .replace(/'/g, "&#039;");
+        }
+
+        // Inicialização ao carregar a página
+        window.onload = function() {
+            loadData();
+        };
+    </script>
+</body>
+</html>

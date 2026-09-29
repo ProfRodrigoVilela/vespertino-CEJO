@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEE Conecta - CEJO</title>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --secondary: #10B981;
+            --danger: #EF4444; /* Cor para o botão de excluir */
+            --background: #F3F4F6;
+            --text: #1F2937;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            border-bottom: 2px solid var(--background);
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #4338CA;
+        }
+        .student-list {
+            margin-top: 30px;
+        }
+        .student-card {
+            background: var(--background);
+            padding: 15px;
+            border-left: 5px solid var(--secondary);
+            border-radius: 6px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .tag {
+            background-color: var(--secondary);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .card-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-delete {
+            background-color: transparent;
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            padding: 4px 8px;
+            font-size: 12px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .btn-delete:hover {
+            background-color: var(--danger);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>AEE Conecta - CEJO</h1>
+        <p style="text-align: center;">Cadastro de Alunos</p>
+
+        <form id="formAEE">
+            <div class="form-group">
+                <label for="nome">Nome do Aluno:</label>
+                <input type="text" id="nome" placeholder="Ex: Maria Silva" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="serie">Série/Ano:</label>
+                <select id="serie" required>
+                    <option value="">Selecione a série</option>
+                    <option value="1º Ano">1º Ano - Ensino Médio</option>
+                    <option value="2º Ano">2º Ano - Ensino Médio</option>
+                    <option value="3º Ano">3º Ano - Ensino Médio</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="necessidade">Necessidade Específica:</label>
+                <select id="necessidade" required>
+                    <option value="">Selecione uma opção</option>
+                    <option value="TEA (Autismo)">TEA (Autismo)</option>
+                    <option value="TDAH">TDAH</option>
+                    <option value="Deficiência Visual">Deficiência Visual</option>
+                    <option value="Deficiência Auditiva">Deficiência Auditiva</option>
+                    <option value="Deficiência Intelectual">Deficiência Intelectual</option>
+                    <option value="Altas Habilidades">Altas Habilidades</option>
+                    <option value="Outros">Outros</option>
+                </select>
+            </div>
+
+            <button type="submit">Cadastrar Aluno</button>
+        </form>
+
+        <div class="student-list" id="listaAlunos">
+            <!-- Os cards dos alunos serão gerados pelo JavaScript aqui -->
+        </div>
+    </div>
+
+    <script>
+        // 1. Carrega os dados salvos no navegador ou inicia uma lista vazia
+        let alunos = JSON.parse(localStorage.getItem('alunosAEE')) || [];
+
+        const form = document.getElementById('formAEE');
+        const listaAlunosDiv = document.getElementById('listaAlunos');
+
+        // 2. Renderiza a lista logo que a página abre
+        renderizarLista();
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            const nome = document.getElementById('nome').value;
+            const serie = document.getElementById('serie').value;
+            const necessidade = document.getElementById('necessidade').value;
+
+            // Cria um ID único usando a data atual (útil para poder excluir depois)
+            const novoAluno = {
+                id: Date.now(),
+                nome: nome,
+                serie: serie,
+                necessidade: necessidade
+            };
+
+            alunos.push(novoAluno);
+            salvarDados(); // Salva no navegador
+            form.reset();
+            renderizarLista();
+        });
+
+        // 3. Função para remover um aluno
+        function excluirAluno(id) {
+            // Filtra a lista, mantendo apenas os alunos que NÃO têm o ID clicado
+            alunos = alunos.filter(aluno => aluno.id !== id);
+            salvarDados();
+            renderizarLista();
+        }
+
+        // 4. Função para salvar os dados no LocalStorage
+        function salvarDados() {
+            localStorage.setItem('alunosAEE', JSON.stringify(alunos));
+        }
+
+        function renderizarLista() {
+            listaAlunosDiv.innerHTML = '<h2>Alunos Cadastrados</h2>';
+
+            if (alunos.length === 0) {
+                listaAlunosDiv.innerHTML += '<p style="text-align: center; color: #6B7280;">Nenhum aluno cadastrado ainda.</p>';
+                return;
+            }
+
+            alunos.forEach(function(aluno) {
+                const card = document.createElement('div');
+                card.className = 'student-card';
+                card.innerHTML = `
+                    <div>
+                        <strong>${aluno.nome}</strong> <br>
+                        <small>${aluno.serie}</small>
+                    </div>
+                    <div class="card-actions">
+                        <span class="tag">${aluno.necessidade}</span>
+                        <button class="btn-delete" onclick="excluirAluno(${aluno.id})">Excluir</button>
+                    </div>
+                `;
+                listaAlunosDiv.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
